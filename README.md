@@ -142,11 +142,34 @@ or the VS Code PlatformIO extension works without this.
 
 1.  Wire C3 + MCP2515 and flash `logger_esp32c3_mcp2515`.
 2.  Connect to K-CAN behind the radio, ignition on, confirm 0x1D6 frames.
-3.  In `m` mode, press each button and verify the table above.
+3.  In `m` mode, press each button and verify the table above. Then type
+    `s` and save the list of CAN IDs seen at the tap point (input for
+    step 6).
 4.  Flash `app_ble_esp32c3_mcp2515`. On the phone, open Bluetooth
     settings, pair "BMW E92 Buttons", and test.
 5.  Build a small enclosure (PETG/ABS, not PLA) and mount it behind the
-    radio.
+    radio. Optional: mount it in the armrest console instead, powered by
+    a dual USB adapter in the armrest 12 V socket (shared with the
+    Bluetooth-AUX receiver, no buck converter needed). This keeps the
+    C3's USB-C port reachable for reflashing; run the twisted K-CAN pair
+    (~1 m) from behind the radio.
+6.  **Live dashboard over Wi-Fi.** The C3 runs a Wi-Fi hotspot and
+    serves a web page, opened on the phone in its holder. Plan:
+    -   Decode extra K-CAN values (to be confirmed with the logger):
+        battery voltage `0x3B4`, coolant temp `0x1D0`, outside temp
+        `0x2CA`, speed `0x1B4`, RPM `0x0AA`, fuel level `0x349`, range
+        `0x366`.
+    -   Page stored on the C3, live updates several times per second
+        without reloading, dark theme, large numbers, landscape layout.
+        Save to the home screen so it opens like an app.
+    -   Access via the C3's own hotspot at a fixed address, e.g.
+        `http://192.168.4.1` (on Android choose "stay connected" when
+        warned about no internet). Alternative: the C3 joins the phone's
+        personal hotspot, which keeps mobile data working.
+    -   Wi-Fi and BLE share the C3's single radio; fine for button
+        presses plus a dashboard.
+7.  Wireless firmware updates (OTA) over the same Wi-Fi, so reflashing no
+    longer needs USB.
 
 ## References
 
