@@ -1,6 +1,6 @@
 # e9x-kcan-media-control
 
-![Module concept](3d-print-design-concept.png)
+![Module concept](3d-design-concept.png)
 
 Use the factory steering-wheel buttons of a BMW E9x (built for an E92) to
 control music on the phone. An ESP32-C3 listens to the steering-wheel
@@ -20,7 +20,7 @@ Buttons". Volume stays with the factory radio.
 
 ## Hardware
 
--   ESP32-C3 dev board
+-   ESP32-C3-DevKitM-1 (ESP32-C3-MINI-1, micro-USB via CP2102)
 -   MCP2515 CAN module (MCP2515 + TJA1050, 8 MHz crystal)
 -   Buck converter 12 V → 5 V
 -   Inline fuse 1–2 A on the 12 V input
@@ -48,8 +48,11 @@ Notes:
     terminated.
 -   If the crystal is marked `16.000`, set `MCP2515_CRYSTAL_MHZ=16` in
     `platformio.ini`.
--   Leave the C3's USB-C port reachable from outside the enclosure for
+-   Leave the C3's micro-USB port reachable from outside the enclosure for
     flashing and serial logs.
+-   Serial runs over the board's CP2102 bridge (UART0). For a C3 board
+    with native USB only (e.g. SuperMini), set `ARDUINO_USB_MODE=1` and
+    `ARDUINO_USB_CDC_ON_BOOT=1` in `[chip_esp32c3]`.
 
 ### Where to connect
 
@@ -151,7 +154,7 @@ or the VS Code PlatformIO extension works without this.
     radio. Optional: mount it in the armrest console instead, powered by
     a dual USB adapter in the armrest 12 V socket (shared with the
     Bluetooth-AUX receiver, no buck converter needed). This keeps the
-    C3's USB-C port reachable for reflashing; run the twisted K-CAN pair
+    C3's micro-USB port reachable for reflashing; run the twisted K-CAN pair
     (~1 m) from behind the radio.
 6.  **Live dashboard over Wi-Fi.** The C3 runs a Wi-Fi hotspot and
     serves a web page, opened on the phone in its holder. Plan:
